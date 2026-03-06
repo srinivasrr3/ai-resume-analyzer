@@ -1,0 +1,61 @@
+java
+spring
+spring boot
+hibernate
+microservices
+docker
+kubernetes
+aws
+azure
+gcp
+sql
+mysql
+postgresql
+mongodb
+react
+angular
+vue
+node
+express
+python
+django
+flask
+data structures
+algorithms
+machine learning
+deep learning
+nlp
+power bi
+tableau
+excel
+jira
+agile
+devops
+ci/cd
+jenkins
+linux
+git
+rest api
+graphql
+html
+css
+javascript
+typescript
+c
+c++
+go
+scala
+rust
+android
+ios
+swift
+kotlin
+sales
+marketing
+finance
+accounting
+hr
+recruitment
+communication
+leadership
+project management
