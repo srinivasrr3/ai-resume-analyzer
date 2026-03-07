@@ -9,9 +9,9 @@ import com.resume.resume_analyzer_backend.service.ResumeMatchService;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/resume")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ResumeController {
 
     @Autowired
