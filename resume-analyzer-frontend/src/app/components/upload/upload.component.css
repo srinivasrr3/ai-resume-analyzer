@@ -1,0 +1,87 @@
+.upload-card {
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.upload-card input,
+.upload-card textarea {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  font-size: 16px;
+}
+
+.upload-card button {
+  background: #2563eb;
+  color: white;
+  padding: 16px 32px;
+  border-radius: 14px;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.parsing-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.resume-mock {
+  width: 300px;
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.mock-line {
+  height: 10px;
+  background: #e2e8f0;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+.mock-line.short { width: 60%; }
+.mock-line.medium { width: 80%; }
+
+.scan-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg,#2563eb,#60a5fa);
+  animation: scanMove 1.5s infinite linear;
+}
+
+@keyframes scanMove {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+
+.parsing-text {
+  margin-top: 20px;
+  font-weight: 600;
+  color: #2563eb;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}

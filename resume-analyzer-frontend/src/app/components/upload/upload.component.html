@@ -1,0 +1,15 @@
+<div class="upload-card">
+
+  <input type="file" (change)="onFileSelected($event)" />
+
+  <textarea 
+    rows="6"
+    [(ngModel)]="jobDescription"
+    placeholder="Paste Job Description here...">
+  </textarea>
+
+  <button (click)="analyze()" [disabled]="isLoading">
+    {{ isLoading ? 'Analyzing Resume...' : 'Get ATS Score & Analyze' }}
+  </button>
+
+</div>

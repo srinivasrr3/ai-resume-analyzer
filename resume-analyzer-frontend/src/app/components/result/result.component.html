@@ -1,0 +1,90 @@
+<div class="result-card">
+
+  <h3>Resume Match Result</h3>
+
+  <!-- Overall -->
+  <div class="bar-block">
+    <div class="bar-label">
+      <span>Overall ATS Score</span>
+      <span>{{ overallScore }}%</span>
+    </div>
+    <div class="bar">
+      <div class="bar-fill" [style.width.%]="overallScore"></div>
+    </div>
+  </div>
+
+  <h4 class="breakdown-title">ATS Breakdown</h4>
+
+  <!-- Breakdown Bars -->
+  <div class="bar-block">
+    <div class="bar-label">
+      <span>Keyword Match</span>
+      <span>{{ keywordScore }}%</span>
+    </div>
+    <div class="bar">
+      <div class="bar-fill" [style.width.%]="keywordScore"></div>
+    </div>
+  </div>
+
+  <div class="bar-block">
+    <div class="bar-label">
+      <span>Skill Coverage</span>
+      <span>{{ skillScore }}%</span>
+    </div>
+    <div class="bar">
+      <div class="bar-fill" [style.width.%]="skillScore"></div>
+    </div>
+  </div>
+
+  <div class="bar-block">
+    <div class="bar-label">
+      <span>Formatting</span>
+      <span>{{ formatScore }}%</span>
+    </div>
+    <div class="bar">
+      <div class="bar-fill" [style.width.%]="formatScore"></div>
+    </div>
+  </div>
+
+  <div class="bar-block">
+    <div class="bar-label">
+      <span>Content Strength</span>
+      <span>{{ contentScore }}%</span>
+    </div>
+    <div class="bar">
+      <div class="bar-fill" [style.width.%]="contentScore"></div>
+    </div>
+  </div>
+
+  <!-- Skills Section -->
+  <div class="skills-wrapper">
+
+    <div class="skill-column">
+      <h4 class="match-title">Matched Skills</h4>
+      <ul>
+        <li *ngFor="let skill of result.matchedSkills" class="matched">
+          {{ skill }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="skills-divider"></div>
+
+    <div class="skill-column">
+      <h4 class="miss-title">Missing Skills</h4>
+      <ul>
+        <li *ngFor="let skill of result.missingSkills" class="missing">
+          {{ skill }}
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- Suggestions -->
+  <div class="suggestions-box">
+    <h4>AI Improvement Suggestions</h4>
+    <pre>{{ displayedSuggestions }}</pre>
+  </div>
+
+</div>

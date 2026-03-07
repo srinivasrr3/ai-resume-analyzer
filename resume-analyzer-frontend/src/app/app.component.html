@@ -1,0 +1,106 @@
+<canvas id="neuralCanvas"></canvas>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container nav-wrapper">
+    <div class="logo">ElevateCV</div>
+
+    <div class="nav-links">
+      <a href="#">Resume</a>
+      <a href="#">Cover Letters</a>
+      <a href="#">Blog</a>
+      <a href="#">Pricing</a>
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn-outline">Sign In</button>
+      <button class="btn-primary">Get Started</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-center">
+
+    <h1>Is Your Resume Good Enough?</h1>
+    <p>
+      Get an accurate ATS score, identify missing skills, and improve your resume instantly using AI-powered analysis.
+    </p>
+
+    <!-- Floating Resume -->
+    <div class="floating-resume-wrapper">
+      <div class="resume-depth-card">
+
+        <div class="resume-title"></div>
+        <div class="resume-line"></div>
+        <div class="resume-line medium"></div>
+        <div class="resume-line short"></div>
+        
+         
+        <div class="skill-preview skill-match">✔ Matched Skills</div>
+        <div class="skill-preview skill-match">✔ Analyze & Improve</div>
+        <div class="skill-preview skill-miss">✖ Missing skills </div>
+
+        <div class="scan-beam"></div>
+      </div>
+      <div class="resume-depth-shadow"></div>
+    </div>
+
+    <app-upload (analysisCompleted)="handleAnalysis($event)"></app-upload>
+
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="results-section" *ngIf="analysisResult">
+  <div class="container">
+    <app-result [result]="analysisResult"></app-result>
+  </div>
+</section>
+
+<!-- HOW IT WORKS (Placed Above Footer) -->
+<section class="how-it-works">
+  <div class="container">
+    <h2>How Our AI Resume Analyzer Works</h2>
+    <p class="how-desc">
+      Our AI scans your resume using advanced parsing algorithms. It extracts technical skills,
+      evaluates keyword matching, analyzes formatting, calculates ATS compatibility,
+      and compares it against your job description.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <h4>1. Smart Parsing</h4>
+        <p>Extracts skills, technologies, experience & formatting structure.</p>
+      </div>
+
+      <div class="step">
+        <h4>2. Skill Matching</h4>
+        <p>Compares resume skills with job description requirements.</p>
+      </div>
+
+      <div class="step">
+        <h4>3. ATS Score Generation</h4>
+        <p>Generates real-time ATS score based on relevance & completeness.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-center">
+    <div>
+      <h4>About ElevateCV</h4>
+      <p>AI-powered resume improvement platform helping candidates land interviews faster.</p>
+    </div>
+
+    <div>
+      <h4>Support</h4>
+      <p>Contact Us</p>
+      <p>FAQs</p>
+      <p>Privacy Policy</p>
+    </div>
+  </div>
+</footer>
