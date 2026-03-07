@@ -16,6 +16,10 @@ public class ResumeController {
 
     @Autowired
     private ResumeMatchService resumeMatchService;
+    @GetMapping("/")
+public String home() {
+    return "AI Resume Analyzer Backend Running";
+}
 
     @PostMapping("/upload")
     public Map<String, Object> uploadResume(
