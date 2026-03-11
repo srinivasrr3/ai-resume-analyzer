@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "dist/resume-analyzer-frontend",
+  "framework": "angular",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
