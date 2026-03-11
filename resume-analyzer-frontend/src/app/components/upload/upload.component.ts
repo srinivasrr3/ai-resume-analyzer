@@ -20,9 +20,8 @@ export class UploadComponent {
 
   constructor(private http: HttpClient) {}
 
-  // File selection
-  onResumeSelect(event: any) {
-    if (event.target.files.length > 0) {
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];
     }
   }
@@ -30,13 +29,13 @@ export class UploadComponent {
   analyze() {
 
     if (!this.selectedFile || !this.jobDescription.trim()) {
-      alert("Please upload a resume and paste the job description.");
+      alert("Please upload a resume and enter job description");
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    formData.append('jobDescription', this.jobDescription);
+    formData.append("file", this.selectedFile);
+    formData.append("jobDescription", this.jobDescription);
 
     this.isLoading = true;
 
@@ -46,18 +45,16 @@ export class UploadComponent {
     ).subscribe({
       next: (response) => {
 
-        // Create new object reference so Angular detects changes
         const cleanResponse = { ...response };
-
         this.analysisCompleted.emit(cleanResponse);
 
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error("Analysis failed:", err);
-        alert("Resume analysis failed. Please try again.");
+      error: (error) => {
+        console.error("Analysis failed:", error);
         this.isLoading = false;
       }
     });
+
   }
 }
