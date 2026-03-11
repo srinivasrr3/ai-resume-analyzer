@@ -20,7 +20,8 @@ export class UploadComponent {
 
   constructor(private http: HttpClient) {}
 
-  onFileSelected(event: any) {
+  // This matches your HTML
+  onResumeSelect(event: any) {
     const file = event.target.files?.[0];
     if (file) {
       this.selectedFile = file;
@@ -30,7 +31,7 @@ export class UploadComponent {
   analyze() {
 
     if (!this.selectedFile || !this.jobDescription.trim()) {
-      alert("Please upload a resume and paste the job description.");
+      alert("Please upload a resume and enter job description.");
       return;
     }
 
@@ -47,6 +48,7 @@ export class UploadComponent {
       next: (response) => {
 
         const cleanResponse = { ...response };
+
         this.analysisCompleted.emit(cleanResponse);
 
         this.isLoading = false;
@@ -56,7 +58,5 @@ export class UploadComponent {
         this.isLoading = false;
       }
     });
-
   }
-
 }
