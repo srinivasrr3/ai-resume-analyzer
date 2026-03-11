@@ -21,21 +21,22 @@ export class UploadComponent {
   constructor(private http: HttpClient) {}
 
   onFileSelected(event: any) {
-    if (event.target.files && event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
+    const file = event.target.files?.[0];
+    if (file) {
+      this.selectedFile = file;
     }
   }
 
   analyze() {
 
     if (!this.selectedFile || !this.jobDescription.trim()) {
-      alert("Please upload a resume and enter job description");
+      alert("Please upload a resume and paste the job description.");
       return;
     }
 
     const formData = new FormData();
-    formData.append("file", this.selectedFile);
-    formData.append("jobDescription", this.jobDescription);
+    formData.append('file', this.selectedFile);
+    formData.append('jobDescription', this.jobDescription);
 
     this.isLoading = true;
 
@@ -51,10 +52,11 @@ export class UploadComponent {
         this.isLoading = false;
       },
       error: (error) => {
-        console.error("Analysis failed:", error);
+        console.error("API Error:", error);
         this.isLoading = false;
       }
     });
 
   }
+
 }
