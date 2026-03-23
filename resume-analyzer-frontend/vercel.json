@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "cd resume-analyzer-frontend && npm ci && npm run build",
-  "outputDirectory": "resume-analyzer-frontend/dist/resume-analyzer-frontend/browser",
+  "buildCommand": "npm ci && npm run build",
+  "outputDirectory": "dist/resume-analyzer-frontend/browser",
   "rewrites": [
     {
       "source": "/api/(.*)",

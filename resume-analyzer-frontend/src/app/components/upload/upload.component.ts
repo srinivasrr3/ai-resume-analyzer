@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ResumeService } from '../../services/resume.service';
 
 @Component({
   selector: 'app-upload',
@@ -18,7 +18,7 @@ export class UploadComponent {
   jobDescription: string = '';
   isLoading: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private resumeService: ResumeService) {}
 
   // This matches your HTML
   onResumeSelect(event: any) {
@@ -35,16 +35,9 @@ export class UploadComponent {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    formData.append('jobDescription', this.jobDescription);
-
     this.isLoading = true;
 
-    this.http.post<any>(
-      "https://ai-resume-analyzer-pypx.onrender.com/api/resume/upload",
-      formData
-    ).subscribe({
+    this.resumeService.analyzeResume(this.selectedFile, this.jobDescription).subscribe({
       next: (response) => {
 
         const cleanResponse = { ...response };

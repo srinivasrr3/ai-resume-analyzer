@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ResumeService {
-
-  private apiUrl = 'http://localhost:8080/api/resume/upload';
+  // Use same-origin API path. In dev this can be proxied, and in Vercel it is rewritten to Render.
+  private readonly apiUrl = '/api/resume/upload';
 
   constructor(private http: HttpClient) {}
 
