@@ -6,15 +6,15 @@
     <div class="logo">ElevateCV</div>
 
     <div class="nav-links">
-      <a href="#">Resume</a>
-      <a href="#">Cover Letters</a>
-      <a href="#">Blog</a>
-      <a href="#">Pricing</a>
+      <a href="#" (click)="$event.preventDefault(); openFeature('resume')">Resume</a>
+      <a href="#" (click)="$event.preventDefault(); openFeature('cover-letters')">Cover Letters</a>
+      <a href="#" (click)="$event.preventDefault(); openFeature('blog')">Blog</a>
+      <a href="#" (click)="$event.preventDefault(); openFeature('pricing')">Pricing</a>
     </div>
 
     <div class="nav-actions">
-      <button class="btn-outline">Sign In</button>
-      <button class="btn-primary">Get Started</button>
+      <button class="btn-outline" (click)="openSignIn()">Sign In</button>
+      <button class="btn-primary" (click)="goToAnalyzer()">Get Started</button>
     </div>
   </div>
 </nav>
@@ -47,8 +47,101 @@
       <div class="resume-depth-shadow"></div>
     </div>
 
-    <app-upload (analysisCompleted)="handleAnalysis($event)"></app-upload>
+    <div id="analyzer-section">
+      <app-upload (analysisCompleted)="handleAnalysis($event)"></app-upload>
+    </div>
 
+  </div>
+</section>
+
+<!-- FEATURE PANELS -->
+<section class="feature-panel" *ngIf="activeFeature === 'resume'">
+  <div class="container panel-content">
+    <h3>Resume Toolkit</h3>
+    <p>
+      Download a polished demo resume in PDF format and use it as a practical reference for structure,
+      impact statements, and ATS-friendly formatting.
+    </p>
+    <div class="panel-actions">
+      <button class="btn-primary" (click)="downloadDemoResume()">Download Demo Resume PDF</button>
+      <button class="btn-outline" (click)="goToAnalyzer()">Analyze Your Resume</button>
+      <button class="btn-ghost" (click)="closeFeaturePanel()">Close</button>
+    </div>
+  </div>
+</section>
+
+<section class="feature-panel" *ngIf="activeFeature === 'cover-letters'">
+  <div class="container panel-content">
+    <h3>Cover Letters</h3>
+    <p>
+      Use this structure to write concise, high-impact cover letters:
+      role fit summary, proof with metrics, and a direct close.
+    </p>
+    <div class="template-grid">
+      <div class="template-card">
+        <h4>Opening</h4>
+        <p>I am applying for the [Role] position at [Company], where I can contribute with [specific strengths].</p>
+      </div>
+      <div class="template-card">
+        <h4>Impact Paragraph</h4>
+        <p>At [Previous Company], I improved [metric] by [result] by implementing [solution].</p>
+      </div>
+      <div class="template-card">
+        <h4>Closing</h4>
+        <p>I would value the opportunity to discuss how my experience can help [Company] reach [goal].</p>
+      </div>
+    </div>
+    <button class="btn-ghost" (click)="closeFeaturePanel()">Close</button>
+  </div>
+</section>
+
+<section class="feature-panel" *ngIf="activeFeature === 'blog'">
+  <div class="container panel-content">
+    <h3>Career Blog</h3>
+    <p>Practical resources to improve ATS score, resume relevance, and interview conversion.</p>
+    <div class="blog-grid">
+      <article class="blog-card" *ngFor="let post of blogPosts">
+        <h4>{{ post.title }}</h4>
+        <p>{{ post.excerpt }}</p>
+      </article>
+    </div>
+    <button class="btn-ghost" (click)="closeFeaturePanel()">Close</button>
+  </div>
+</section>
+
+<section class="feature-panel" *ngIf="activeFeature === 'pricing'" id="pricing-section">
+  <div class="container panel-content">
+    <h3>Pricing</h3>
+    <p>Pick a plan based on analysis depth and monthly usage.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h4>Starter</h4>
+        <p class="price-value">Free</p>
+        <p>Basic ATS score and keyword match insights.</p>
+      </div>
+      <div class="price-card featured">
+        <h4>Pro</h4>
+        <p class="price-value">$12/mo</p>
+        <p>Advanced skill gap detection and personalized improvement suggestions.</p>
+      </div>
+      <div class="price-card">
+        <h4>Teams</h4>
+        <p class="price-value">$49/mo</p>
+        <p>Bulk resume analysis and recruiter-ready candidate summaries.</p>
+      </div>
+    </div>
+    <button class="btn-ghost" (click)="closeFeaturePanel()">Close</button>
+  </div>
+</section>
+
+<section class="sign-in-modal" *ngIf="signInOpen">
+  <div class="sign-in-card">
+    <h3>Sign In</h3>
+    <input type="email" [(ngModel)]="signInEmail" placeholder="Email address" />
+    <input type="password" [(ngModel)]="signInPassword" placeholder="Password" />
+    <button class="btn-primary full-width" (click)="submitSignIn()">Sign In</button>
+    <p class="sign-in-message" *ngIf="signInMessage">{{ signInMessage }}</p>
+    <button class="btn-ghost full-width" (click)="closeSignIn()">Close</button>
   </div>
 </section>
 
