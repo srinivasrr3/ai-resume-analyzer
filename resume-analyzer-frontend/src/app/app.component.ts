@@ -1,8 +1,19 @@
-import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UploadComponent } from './components/upload/upload.component';
 import { ResultComponent } from './components/result/result.component';
+
+type PageName =
+  | 'home'
+  | 'resume'
+  | 'cover-letters'
+  | 'blog'
+  | 'pricing'
+  | 'sign-in'
+  | 'contact'
+  | 'faqs'
+  | 'privacy-policy';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +22,9 @@ import { ResultComponent } from './components/result/result.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit {
-
+export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   analysisResult: any = null;
-  activeFeature: 'resume' | 'cover-letters' | 'blog' | 'pricing' | null = null;
-  signInOpen = false;
+  currentPage: PageName = 'home';
   signInEmail = '';
   signInPassword = '';
   signInMessage = '';
@@ -34,40 +43,58 @@ export class AppComponent implements AfterViewInit {
     }
   ];
 
+  private readonly popStateHandler = () => {
+    this.currentPage = this.pathToPage(window.location.pathname);
+  };
+
   constructor(private cdr: ChangeDetectorRef) {}
 
-  handleAnalysis(result: any) {
+  ngOnInit(): void {
+    this.currentPage = this.pathToPage(window.location.pathname);
+    window.addEventListener('popstate', this.popStateHandler);
+  }
 
-    // CRITICAL FIX: force new reference
-    this.analysisResult = null;
-
-    setTimeout(() => {
-      this.analysisResult = { ...result };
-      this.cdr.detectChanges();
-    }, 0);
+  ngOnDestroy(): void {
+    window.removeEventListener('popstate', this.popStateHandler);
   }
 
   ngAfterViewInit(): void {
     this.initNeuralBackground();
   }
 
-  openFeature(feature: 'resume' | 'cover-letters' | 'blog' | 'pricing') {
-    this.activeFeature = feature;
-    this.signInOpen = false;
+  handleAnalysis(result: any) {
+    this.analysisResult = null;
+    setTimeout(() => {
+      this.analysisResult = { ...result };
+      this.cdr.detectChanges();
+    }, 0);
   }
 
-  closeFeaturePanel() {
-    this.activeFeature = null;
+  navigateTo(page: PageName) {
+    this.currentPage = page;
+    const targetPath = page === 'home' ? '/' : `/${page}`;
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  openSignIn() {
-    this.signInOpen = true;
-    this.activeFeature = null;
-  }
-
-  closeSignIn() {
-    this.signInOpen = false;
-    this.signInMessage = '';
+  private pathToPage(pathname: string): PageName {
+    const clean = pathname.replace(/\/+$/, '') || '/';
+    const page = clean.slice(1) as PageName;
+    const validPages: PageName[] = [
+      'home',
+      'resume',
+      'cover-letters',
+      'blog',
+      'pricing',
+      'sign-in',
+      'contact',
+      'faqs',
+      'privacy-policy'
+    ];
+    if (clean === '/') return 'home';
+    return validPages.includes(page) ? page : 'home';
   }
 
   goToAnalyzer() {
