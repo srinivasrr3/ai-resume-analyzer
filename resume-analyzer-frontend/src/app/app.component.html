@@ -177,7 +177,13 @@
           <div class="password-policy" *ngIf="authMode === 'signup'">
             <h4>Password must include:</h4>
             <ul>
-              <li *ngFor="let item of passwordRecommendations">{{ item }}</li>
+              <li
+                *ngFor="let item of passwordRequirements"
+                [class.requirement-met]="getPasswordRequirementState(item.key)"
+                [class.requirement-unmet]="!getPasswordRequirementState(item.key)"
+              >
+                {{ item.label }}
+              </li>
             </ul>
           </div>
           <p class="sign-in-message" *ngIf="signInMessage">{{ signInMessage }}</p>

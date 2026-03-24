@@ -234,6 +234,15 @@
   padding-left: 18px;
 }
 
+.requirement-met {
+  color: #166534;
+  font-weight: 600;
+}
+
+.requirement-unmet {
+  color: #b91c1c;
+}
+
 .account-summary {
   margin-top: 20px;
   background: #f8fafc;

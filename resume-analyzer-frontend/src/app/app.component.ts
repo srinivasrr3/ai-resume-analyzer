@@ -5,6 +5,7 @@ import { UploadComponent } from './components/upload/upload.component';
 import { ResultComponent } from './components/result/result.component';
 import { AuthService, AuthUser } from './services/auth.service';
 import { ResumeService } from './services/resume.service';
+import { finalize, timeout } from 'rxjs/operators';
 
 type PageName =
   | 'home'
@@ -36,10 +37,12 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   authLoading = false;
   currentUser: AuthUser | null = null;
   history: any[] = [];
-  readonly passwordRecommendations = [
-    'Use at least 10 characters.',
-    'Include uppercase, lowercase, and numbers.',
-    'Add at least one special character.'
+  readonly passwordRequirements = [
+    { key: 'length', label: 'At least 10 characters' },
+    { key: 'lowercase', label: 'At least one lowercase letter' },
+    { key: 'uppercase', label: 'At least one uppercase letter' },
+    { key: 'number', label: 'At least one number' },
+    { key: 'special', label: 'At least one special character' }
   ];
   readonly blogPosts = [
     {
@@ -148,10 +151,26 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
       return;
     }
 
+    if (this.authMode === 'signup') {
+      const unmet = this.getUnmetPasswordRequirements(this.signInPassword);
+      if (unmet.length) {
+        this.signInError = `Password does not meet requirements: ${unmet.join(', ')}.`;
+        return;
+      }
+    }
+
     this.authLoading = true;
 
     if (this.authMode === 'signup') {
-      this.authService.signUp(this.signUpFullName, this.signInEmail, this.signInPassword).subscribe({
+      this.authService
+        .signUp(this.signUpFullName, this.signInEmail, this.signInPassword)
+        .pipe(
+          timeout(15000),
+          finalize(() => {
+            this.authLoading = false;
+          })
+        )
+        .subscribe({
         next: (response) => {
           this.authService.storeSession(response);
           this.currentUser = {
@@ -159,20 +178,27 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
             fullName: response.fullName,
             email: response.email
           };
-          this.signInMessage = response.message || 'Account created successfully.';
+          this.signInMessage = `Welcome, ${response.fullName}! Account created successfully.`;
           this.signInError = '';
-          this.authLoading = false;
+          this.signInPassword = '';
           this.loadHistory();
         },
         error: (err) => {
-          this.signInError = err?.error?.error || 'Unable to create account.';
-          this.authLoading = false;
+          this.signInError = this.resolveAuthError(err, 'Unable to create account.');
         }
       });
       return;
     }
 
-    this.authService.signIn(this.signInEmail, this.signInPassword).subscribe({
+    this.authService
+      .signIn(this.signInEmail, this.signInPassword)
+      .pipe(
+        timeout(15000),
+        finalize(() => {
+          this.authLoading = false;
+        })
+      )
+      .subscribe({
       next: (response) => {
         this.authService.storeSession(response);
         this.currentUser = {
@@ -180,14 +206,13 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
           fullName: response.fullName,
           email: response.email
         };
-        this.signInMessage = response.message || 'Signed in successfully.';
+        this.signInMessage = `Welcome back, ${response.fullName}! Signed in successfully.`;
         this.signInError = '';
-        this.authLoading = false;
+        this.signInPassword = '';
         this.loadHistory();
       },
       error: (err) => {
-        this.signInError = err?.error?.error || 'Unable to sign in.';
-        this.authLoading = false;
+        this.signInError = this.resolveAuthError(err, 'Unable to sign in.');
       }
     });
   }
@@ -196,6 +221,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.authMode = mode;
     this.signInMessage = '';
     this.signInError = '';
+    this.signInPassword = '';
   }
 
   signOut() {
@@ -224,6 +250,57 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         this.history = [];
       }
     });
+  }
+
+  getPasswordRequirementState(requirementKey: string): boolean {
+    const password = this.signInPassword || '';
+    switch (requirementKey) {
+      case 'length':
+        return password.length >= 10;
+      case 'lowercase':
+        return /[a-z]/.test(password);
+      case 'uppercase':
+        return /[A-Z]/.test(password);
+      case 'number':
+        return /\d/.test(password);
+      case 'special':
+        return /[^A-Za-z0-9]/.test(password);
+      default:
+        return false;
+    }
+  }
+
+  private getUnmetPasswordRequirements(password: string): string[] {
+    return this.passwordRequirements
+      .filter((item) => !this.getPasswordRequirementStateForValue(item.key, password))
+      .map((item) => item.label);
+  }
+
+  private getPasswordRequirementStateForValue(requirementKey: string, password: string): boolean {
+    switch (requirementKey) {
+      case 'length':
+        return password.length >= 10;
+      case 'lowercase':
+        return /[a-z]/.test(password);
+      case 'uppercase':
+        return /[A-Z]/.test(password);
+      case 'number':
+        return /\d/.test(password);
+      case 'special':
+        return /[^A-Za-z0-9]/.test(password);
+      default:
+        return false;
+    }
+  }
+
+  private resolveAuthError(err: any, fallback: string): string {
+    if (err?.name === 'TimeoutError') {
+      return 'Request timed out. Please check backend deployment and try again.';
+    }
+    if (err?.status === 0) {
+      return 'Server is unreachable. Please wait a moment and retry.';
+    }
+    return err?.error?.error || fallback;
   }
 
   downloadDemoResume() {
