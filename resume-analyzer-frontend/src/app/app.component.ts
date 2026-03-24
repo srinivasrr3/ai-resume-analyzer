@@ -37,6 +37,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   authLoading = false;
   currentUser: AuthUser | null = null;
   history: any[] = [];
+  private authWatchdogTimer: ReturnType<typeof setTimeout> | null = null;
   readonly passwordRequirements = [
     { key: 'length', label: 'At least 10 characters' },
     { key: 'lowercase', label: 'At least one lowercase letter' },
@@ -88,6 +89,10 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     window.removeEventListener('popstate', this.popStateHandler);
+    if (this.authWatchdogTimer) {
+      clearTimeout(this.authWatchdogTimer);
+      this.authWatchdogTimer = null;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -159,7 +164,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     }
 
-    this.authLoading = true;
+    this.startAuthRequestWatchdog();
 
     if (this.authMode === 'signup') {
       this.authService
@@ -168,6 +173,10 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
           timeout(15000),
           finalize(() => {
             this.authLoading = false;
+            if (this.authWatchdogTimer) {
+              clearTimeout(this.authWatchdogTimer);
+              this.authWatchdogTimer = null;
+            }
           })
         )
         .subscribe({
@@ -182,9 +191,11 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
           this.signInError = '';
           this.signInPassword = '';
           this.loadHistory();
+          this.cdr.detectChanges();
         },
         error: (err) => {
           this.signInError = this.resolveAuthError(err, 'Unable to create account.');
+          this.cdr.detectChanges();
         }
       });
       return;
@@ -196,6 +207,10 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         timeout(15000),
         finalize(() => {
           this.authLoading = false;
+          if (this.authWatchdogTimer) {
+            clearTimeout(this.authWatchdogTimer);
+            this.authWatchdogTimer = null;
+          }
         })
       )
       .subscribe({
@@ -210,9 +225,11 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
         this.signInError = '';
         this.signInPassword = '';
         this.loadHistory();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.signInError = this.resolveAuthError(err, 'Unable to sign in.');
+        this.cdr.detectChanges();
       }
     });
   }
@@ -238,6 +255,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.signInPassword = '';
     this.signInMessage = showMessage ? 'Signed out successfully.' : '';
     this.signInError = '';
+    this.cdr.detectChanges();
   }
 
   private loadHistory() {
@@ -301,6 +319,20 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
       return 'Server is unreachable. Please wait a moment and retry.';
     }
     return err?.error?.error || fallback;
+  }
+
+  private startAuthRequestWatchdog() {
+    this.authLoading = true;
+    if (this.authWatchdogTimer) {
+      clearTimeout(this.authWatchdogTimer);
+    }
+    this.authWatchdogTimer = setTimeout(() => {
+      if (this.authLoading) {
+        this.authLoading = false;
+        this.signInError = 'Authentication request is taking too long. Please retry.';
+        this.cdr.detectChanges();
+      }
+    }, 20000);
   }
 
   downloadDemoResume() {
