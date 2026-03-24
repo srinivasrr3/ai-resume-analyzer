@@ -13,6 +13,14 @@
 
     <div class="nav-actions">
       <button class="btn-outline" (click)="navigateTo('sign-in')">Sign In</button>
+      <div
+        class="profile-avatar"
+        *ngIf="currentUser"
+        [title]="currentUser.fullName"
+        aria-label="Logged in user profile initials"
+      >
+        {{ getUserInitials() }}
+      </div>
       <button class="btn-primary" (click)="goToAnalyzer()">Get Started</button>
     </div>
   </div>

@@ -321,6 +321,20 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     return err?.error?.error || fallback;
   }
 
+  getUserInitials(): string {
+    const fullName = this.currentUser?.fullName?.trim();
+    if (!fullName) return '';
+
+    const parts = fullName.split(/\s+/).filter(Boolean);
+    if (parts.length === 1) {
+      return parts[0].substring(0, 1).toUpperCase();
+    }
+
+    const first = parts[0].substring(0, 1).toUpperCase();
+    const last = parts[parts.length - 1].substring(0, 1).toUpperCase();
+    return `${first}${last}`;
+  }
+
   private startAuthRequestWatchdog() {
     this.authLoading = true;
     if (this.authWatchdogTimer) {

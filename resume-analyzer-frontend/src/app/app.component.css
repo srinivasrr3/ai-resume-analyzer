@@ -46,6 +46,27 @@
   margin-left: 10px;
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+  letter-spacing: 0.4px;
+}
+
 .btn-primary {
   background: #2563eb;
   color: white;
