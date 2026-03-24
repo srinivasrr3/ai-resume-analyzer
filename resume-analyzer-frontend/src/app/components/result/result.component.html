@@ -1,8 +1,10 @@
 <div class="result-card">
-
   <h3>Resume Match Result</h3>
 
-  <!-- Overall -->
+  <div class="analysis-summary" *ngIf="result.analysisSummary">
+    {{ result.analysisSummary }}
+  </div>
+
   <div class="bar-block">
     <div class="bar-label">
       <span>Overall ATS Score</span>
@@ -15,7 +17,6 @@
 
   <h4 class="breakdown-title">ATS Breakdown</h4>
 
-  <!-- Breakdown Bars -->
   <div class="bar-block">
     <div class="bar-label">
       <span>Keyword Match</span>
@@ -56,9 +57,30 @@
     </div>
   </div>
 
-  <!-- Skills Section -->
-  <div class="skills-wrapper">
+  <div class="stats-grid" *ngIf="result.jdSkillCount !== undefined">
+    <div class="stat-box">
+      <span>JD Skills</span>
+      <strong>{{ result.jdSkillCount }}</strong>
+    </div>
+    <div class="stat-box">
+      <span>Resume Skills</span>
+      <strong>{{ result.resumeSkillCount }}</strong>
+    </div>
+    <div class="stat-box">
+      <span>Matched Skills</span>
+      <strong>{{ result.matchedSkillCount }}</strong>
+    </div>
+  </div>
 
+  <div class="category-scores" *ngIf="result.categoryScores">
+    <h4>Detailed Category Scores</h4>
+    <div class="category-row" *ngFor="let item of result.categoryScores | keyvalue">
+      <span>{{ item.key }}</span>
+      <strong>{{ item.value }}%</strong>
+    </div>
+  </div>
+
+  <div class="skills-wrapper">
     <div class="skill-column">
       <h4 class="match-title">Matched Skills</h4>
       <ul>
@@ -78,13 +100,32 @@
         </li>
       </ul>
     </div>
-
   </div>
 
-  <!-- Suggestions -->
+  <div class="critical-box" *ngIf="result.criticalMissingSkills?.length">
+    <h4>Critical Missing Skills</h4>
+    <ul>
+      <li *ngFor="let skill of result.criticalMissingSkills">{{ skill }}</li>
+    </ul>
+  </div>
+
+  <div class="insights-grid">
+    <div class="insight-card" *ngIf="result.strengths?.length">
+      <h4>Strengths</h4>
+      <ul>
+        <li *ngFor="let point of result.strengths">{{ point }}</li>
+      </ul>
+    </div>
+    <div class="insight-card risk" *ngIf="result.riskFlags?.length">
+      <h4>Risk Flags</h4>
+      <ul>
+        <li *ngFor="let point of result.riskFlags">{{ point }}</li>
+      </ul>
+    </div>
+  </div>
+
   <div class="suggestions-box">
     <h4>AI Improvement Suggestions</h4>
     <pre>{{ displayedSuggestions }}</pre>
   </div>
-
 </div>

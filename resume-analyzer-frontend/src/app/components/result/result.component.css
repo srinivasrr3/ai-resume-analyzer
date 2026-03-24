@@ -2,7 +2,7 @@
   background: white;
   padding: 35px;
   border-radius: 18px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.05);
   margin-top: 60px;
   font-size: 14px;
 }
@@ -10,6 +10,16 @@
 h3 {
   font-size: 18px;
   margin-bottom: 15px;
+}
+
+.analysis-summary {
+  background: #eef6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e3a8a;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
 }
 
 .breakdown-title {
@@ -20,7 +30,7 @@ h3 {
 
 .bar-block {
   margin-bottom: 14px;
-  max-width: 500px;
+  max-width: 540px;
 }
 
 .bar-label {
@@ -41,6 +51,56 @@ h3 {
   height: 100%;
   background: #2563eb;
   transition: width 0.6s ease;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.stat-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-box span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.stat-box strong {
+  color: #0f172a;
+  font-size: 17px;
+}
+
+.category-scores {
+  margin-top: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.category-scores h4 {
+  margin: 0 0 8px 0;
+}
+
+.category-row {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #e2e8f0;
+  padding: 8px 0;
+}
+
+.category-row:first-of-type {
+  border-top: none;
 }
 
 .skills-wrapper {
@@ -70,6 +130,7 @@ h3 {
 .skill-column ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .skill-column li {
@@ -80,17 +141,63 @@ h3 {
 }
 
 .matched {
-  background: rgba(37,99,235,0.12);
+  background: rgba(37, 99, 235, 0.12);
   color: #2563eb;
 }
 
 .missing {
-  background: rgba(239,68,68,0.12);
+  background: rgba(239, 68, 68, 0.12);
   color: #ef4444;
 }
 
+.critical-box {
+  margin-top: 20px;
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.critical-box h4 {
+  margin: 0 0 8px 0;
+  color: #991b1b;
+}
+
+.critical-box ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.insight-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.insight-card h4 {
+  margin: 0 0 8px 0;
+}
+
+.insight-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.insight-card.risk {
+  background: #fff7ed;
+  border-color: #fed7aa;
+}
+
 .suggestions-box {
-  margin-top: 30px;
+  margin-top: 24px;
   background: #f1f5f9;
   padding: 18px;
   border-radius: 12px;
@@ -105,4 +212,21 @@ pre {
   white-space: pre-wrap;
   font-size: 12px;
   font-family: inherit;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .skills-wrapper {
+    flex-direction: column;
+  }
+
+  .skills-divider {
+    width: 100%;
+    height: 2px;
+  }
+
+  .stats-grid,
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
 }

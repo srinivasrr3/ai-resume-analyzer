@@ -1,9 +1,9 @@
 import {
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
-  SimpleChanges,
-  ChangeDetectorRef
+  SimpleChanges
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +15,6 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./result.component.css']
 })
 export class ResultComponent implements OnChanges {
-
   @Input() result: any;
 
   overallScore = 0;
@@ -29,7 +28,6 @@ export class ResultComponent implements OnChanges {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-
     if (!changes['result'] || !this.result) return;
 
     this.resetValues();
@@ -40,7 +38,6 @@ export class ResultComponent implements OnChanges {
       this.animateValue('skillScore', this.result.skillScore);
       this.animateValue('formatScore', this.result.formatScore);
       this.animateValue('contentScore', this.result.contentScore);
-
       this.typeSuggestions();
     }, 100);
   }
@@ -54,12 +51,11 @@ export class ResultComponent implements OnChanges {
     this.displayedSuggestions = '';
   }
 
-  private animateValue(field: string, target: number) {
-
+  private animateValue(field: string, targetInput: number) {
+    const target = Math.max(0, Math.min(100, Math.round(targetInput || 0)));
     let current = 0;
 
     const interval = setInterval(() => {
-
       if (current >= target) {
         clearInterval(interval);
         return;
@@ -68,19 +64,16 @@ export class ResultComponent implements OnChanges {
       current++;
       (this as any)[field] = current;
       this.cdr.detectChanges();
-
-    }, 15);
+    }, 12);
   }
 
   private typeSuggestions() {
+    if (!this.result.improvementSuggestions?.length) return;
 
-    if (!this.result.improvementSuggestions) return;
-
-    const text = this.result.improvementSuggestions.join('\n• ');
+    const text = '- ' + this.result.improvementSuggestions.join('\n- ');
     let index = 0;
 
     const typing = setInterval(() => {
-
       if (index >= text.length) {
         clearInterval(typing);
         return;
@@ -89,7 +82,6 @@ export class ResultComponent implements OnChanges {
       this.displayedSuggestions += text.charAt(index);
       index++;
       this.cdr.detectChanges();
-
-    }, 15);
+    }, 12);
   }
 }
