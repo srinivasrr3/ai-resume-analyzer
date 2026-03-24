@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UploadComponent } from './components/upload/upload.component';
 import { ResultComponent } from './components/result/result.component';
+import { AuthService, AuthUser } from './services/auth.service';
+import { ResumeService } from './services/resume.service';
 
 type PageName =
   | 'home'
@@ -25,9 +27,20 @@ type PageName =
 export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   analysisResult: any = null;
   currentPage: PageName = 'home';
+  authMode: 'signin' | 'signup' = 'signin';
+  signUpFullName = '';
   signInEmail = '';
   signInPassword = '';
   signInMessage = '';
+  signInError = '';
+  authLoading = false;
+  currentUser: AuthUser | null = null;
+  history: any[] = [];
+  readonly passwordRecommendations = [
+    'Use at least 10 characters.',
+    'Include uppercase, lowercase, and numbers.',
+    'Add at least one special character.'
+  ];
   readonly blogPosts = [
     {
       title: '7 ATS Mistakes That Kill Strong Resumes',
@@ -47,11 +60,27 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.currentPage = this.pathToPage(window.location.pathname);
   };
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private resumeService: ResumeService
+  ) {}
 
   ngOnInit(): void {
     this.currentPage = this.pathToPage(window.location.pathname);
     window.addEventListener('popstate', this.popStateHandler);
+    this.currentUser = this.authService.getCurrentUser();
+    if (this.currentUser) {
+      this.authService.me().subscribe({
+        next: (user) => {
+          this.currentUser = user;
+          this.loadHistory();
+        },
+        error: () => {
+          this.clearAuthState(false);
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -67,6 +96,9 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     setTimeout(() => {
       this.analysisResult = { ...result };
       this.cdr.detectChanges();
+      if (this.currentUser) {
+        this.loadHistory();
+      }
     }, 0);
   }
 
@@ -103,11 +135,95 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   submitSignIn() {
-    if (!this.signInEmail.trim() || !this.signInPassword.trim()) {
-      this.signInMessage = 'Please enter both email and password.';
+    this.signInMessage = '';
+    this.signInError = '';
+
+    if (this.authMode === 'signup' && !this.signUpFullName.trim()) {
+      this.signInError = 'Please enter your full name.';
       return;
     }
-    this.signInMessage = 'Demo sign-in successful. Your dashboard will be available in the next release.';
+
+    if (!this.signInEmail.trim() || !this.signInPassword.trim()) {
+      this.signInError = 'Please enter both email and password.';
+      return;
+    }
+
+    this.authLoading = true;
+
+    if (this.authMode === 'signup') {
+      this.authService.signUp(this.signUpFullName, this.signInEmail, this.signInPassword).subscribe({
+        next: (response) => {
+          this.authService.storeSession(response);
+          this.currentUser = {
+            userId: response.userId,
+            fullName: response.fullName,
+            email: response.email
+          };
+          this.signInMessage = response.message || 'Account created successfully.';
+          this.signInError = '';
+          this.authLoading = false;
+          this.loadHistory();
+        },
+        error: (err) => {
+          this.signInError = err?.error?.error || 'Unable to create account.';
+          this.authLoading = false;
+        }
+      });
+      return;
+    }
+
+    this.authService.signIn(this.signInEmail, this.signInPassword).subscribe({
+      next: (response) => {
+        this.authService.storeSession(response);
+        this.currentUser = {
+          userId: response.userId,
+          fullName: response.fullName,
+          email: response.email
+        };
+        this.signInMessage = response.message || 'Signed in successfully.';
+        this.signInError = '';
+        this.authLoading = false;
+        this.loadHistory();
+      },
+      error: (err) => {
+        this.signInError = err?.error?.error || 'Unable to sign in.';
+        this.authLoading = false;
+      }
+    });
+  }
+
+  switchAuthMode(mode: 'signin' | 'signup') {
+    this.authMode = mode;
+    this.signInMessage = '';
+    this.signInError = '';
+  }
+
+  signOut() {
+    this.authService.signOut().subscribe({
+      next: () => this.clearAuthState(true),
+      error: () => this.clearAuthState(true)
+    });
+  }
+
+  private clearAuthState(showMessage: boolean) {
+    this.authService.clearSession();
+    this.currentUser = null;
+    this.history = [];
+    this.signInPassword = '';
+    this.signInMessage = showMessage ? 'Signed out successfully.' : '';
+    this.signInError = '';
+  }
+
+  private loadHistory() {
+    if (!this.authService.isAuthenticated()) return;
+    this.resumeService.getHistory().subscribe({
+      next: (response) => {
+        this.history = response || [];
+      },
+      error: () => {
+        this.history = [];
+      }
+    });
   }
 
   downloadDemoResume() {

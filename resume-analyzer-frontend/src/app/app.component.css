@@ -176,7 +176,19 @@
 
 .sign-in-form {
   margin-top: 16px;
-  max-width: 420px;
+  max-width: 520px;
+}
+
+.auth-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.auth-tabs .btn-ghost.active {
+  border-color: #2563eb;
+  color: #1d4ed8;
+  background: #eff6ff;
 }
 
 .sign-in-form input {
@@ -196,6 +208,64 @@
   margin-top: 8px;
   font-size: 0.9rem;
   color: #166534;
+}
+
+.sign-in-error {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #b91c1c;
+}
+
+.password-policy {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  border-radius: 10px;
+}
+
+.password-policy h4 {
+  margin: 0 0 6px 0;
+  font-size: 0.9rem;
+}
+
+.password-policy ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.account-summary {
+  margin-top: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.history-block {
+  margin-top: 20px;
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.history-card {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.history-card h4 {
+  margin: 0 0 8px 0;
+  color: #0f172a;
+}
+
+.history-card p {
+  margin: 4px 0;
 }
 
 .faq-list,
@@ -453,7 +523,8 @@
 
   .template-grid,
   .blog-grid,
-  .pricing-grid {
+  .pricing-grid,
+  .history-grid {
     grid-template-columns: 1fr;
   }
 

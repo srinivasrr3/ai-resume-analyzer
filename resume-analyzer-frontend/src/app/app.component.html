@@ -151,13 +151,56 @@
       </ng-container>
 
       <ng-container *ngIf="currentPage === 'sign-in'">
-        <h2>Sign In</h2>
-        <p>Access your analysis history, saved resumes, and tailored recommendations.</p>
+        <h2>Account</h2>
+        <p>Save resume analysis data, track history, and access your personalized ATS insights.</p>
         <div class="sign-in-form">
+          <div class="auth-tabs">
+            <button class="btn-ghost" [class.active]="authMode === 'signin'" (click)="switchAuthMode('signin')">
+              Sign In
+            </button>
+            <button class="btn-ghost" [class.active]="authMode === 'signup'" (click)="switchAuthMode('signup')">
+              Sign Up
+            </button>
+          </div>
+
+          <input
+            *ngIf="authMode === 'signup'"
+            type="text"
+            [(ngModel)]="signUpFullName"
+            placeholder="Full name"
+          />
           <input type="email" [(ngModel)]="signInEmail" placeholder="Email address" />
           <input type="password" [(ngModel)]="signInPassword" placeholder="Password" />
-          <button class="btn-primary full-width" (click)="submitSignIn()">Sign In</button>
+          <button class="btn-primary full-width" (click)="submitSignIn()" [disabled]="authLoading">
+            {{ authLoading ? 'Please wait...' : (authMode === 'signup' ? 'Create Account' : 'Sign In') }}
+          </button>
+          <div class="password-policy" *ngIf="authMode === 'signup'">
+            <h4>Password must include:</h4>
+            <ul>
+              <li *ngFor="let item of passwordRecommendations">{{ item }}</li>
+            </ul>
+          </div>
           <p class="sign-in-message" *ngIf="signInMessage">{{ signInMessage }}</p>
+          <p class="sign-in-error" *ngIf="signInError">{{ signInError }}</p>
+        </div>
+
+        <div class="account-summary" *ngIf="currentUser">
+          <h3>Signed in as {{ currentUser.fullName }}</h3>
+          <p>{{ currentUser.email }}</p>
+          <button class="btn-outline" (click)="signOut()">Sign Out</button>
+        </div>
+
+        <div class="history-block" *ngIf="currentUser">
+          <h3>Recent Resume Analyses</h3>
+          <p *ngIf="!history.length">No saved analyses yet. Upload a resume to start building history.</p>
+          <div class="history-grid" *ngIf="history.length">
+            <div class="history-card" *ngFor="let item of history">
+              <h4>{{ item.originalFileName || 'Uploaded Resume' }}</h4>
+              <p>Overall ATS: {{ item.matchScore || 0 }}%</p>
+              <p>Matched Skills: {{ item.matchedSkills?.length || 0 }}</p>
+              <p>Critical Gaps: {{ item.criticalMissingSkills?.length || 0 }}</p>
+            </div>
+          </div>
         </div>
       </ng-container>
 
