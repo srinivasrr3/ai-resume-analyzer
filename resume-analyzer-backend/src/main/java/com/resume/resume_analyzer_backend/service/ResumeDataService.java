@@ -16,11 +16,10 @@ import java.util.Map;
 public class ResumeDataService {
 
     private final ResumeAnalysisRecordRepository repository;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ResumeDataService(ResumeAnalysisRecordRepository repository, ObjectMapper objectMapper) {
+    public ResumeDataService(ResumeAnalysisRecordRepository repository) {
         this.repository = repository;
-        this.objectMapper = objectMapper;
     }
 
     public void saveAnalysis(
