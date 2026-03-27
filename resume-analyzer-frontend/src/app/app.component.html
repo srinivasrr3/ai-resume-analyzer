@@ -178,11 +178,40 @@
             placeholder="Full name"
           />
           <input type="email" [(ngModel)]="signInEmail" placeholder="Email address" />
-          <input type="password" [(ngModel)]="signInPassword" placeholder="Password" />
+          <input
+            *ngIf="!forgotPasswordMode"
+            type="password"
+            [(ngModel)]="signInPassword"
+            placeholder="Password"
+          />
+          <input
+            *ngIf="forgotPasswordMode"
+            type="password"
+            [(ngModel)]="resetPassword"
+            placeholder="New password"
+          />
+          <input
+            *ngIf="forgotPasswordMode"
+            type="password"
+            [(ngModel)]="resetPasswordConfirm"
+            placeholder="Confirm new password"
+          />
           <button class="btn-primary full-width" (click)="submitSignIn()" [disabled]="authLoading">
-            {{ authLoading ? 'Please wait...' : (authMode === 'signup' ? 'Create Account' : 'Sign In') }}
+            {{
+              authLoading
+                ? 'Please wait...'
+                : (forgotPasswordMode ? 'Reset Password' : (authMode === 'signup' ? 'Create Account' : 'Sign In'))
+            }}
           </button>
-          <div class="password-policy" *ngIf="authMode === 'signup'">
+          <button
+            class="btn-link forgot-password-link"
+            *ngIf="authMode === 'signin'"
+            (click)="toggleForgotPasswordMode()"
+            [disabled]="authLoading"
+          >
+            {{ forgotPasswordMode ? 'Back to Sign In' : 'Forgot Password?' }}
+          </button>
+          <div class="password-policy" *ngIf="authMode === 'signup' || forgotPasswordMode">
             <h4>Password must include:</h4>
             <ul>
               <li

@@ -1,6 +1,7 @@
 package com.resume.resume_analyzer_backend.service;
 
 import com.resume.resume_analyzer_backend.dto.auth.AuthResponse;
+import com.resume.resume_analyzer_backend.dto.auth.ForgotPasswordRequest;
 import com.resume.resume_analyzer_backend.dto.auth.PasswordValidationResult;
 import com.resume.resume_analyzer_backend.dto.auth.SignInRequest;
 import com.resume.resume_analyzer_backend.dto.auth.SignUpRequest;
@@ -116,6 +117,25 @@ public class AuthService {
             session.setRevoked(true);
             userSessionRepository.save(session);
         });
+    }
+
+    public void forgotPassword(ForgotPasswordRequest request) {
+        String email = request.getEmail().trim().toLowerCase();
+        AppUser user = appUserRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("No account found for this email."));
+
+        PasswordValidationResult passwordCheck = validatePasswordStrength(request.getNewPassword());
+        if (!passwordCheck.isValid()) {
+            throw new IllegalArgumentException("Weak password. " + String.join(" ", passwordCheck.getRecommendations()));
+        }
+
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPasswordHash())) {
+            throw new IllegalArgumentException("New password must be different from current password.");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        appUserRepository.save(user);
+        revokeExistingSessions(user);
     }
 
     private AuthResponse createSessionResponse(AppUser user, String message) {

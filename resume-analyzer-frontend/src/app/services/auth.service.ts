@@ -32,6 +32,10 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.authApi}/signin`, { email, password });
   }
 
+  forgotPassword(email: string, newPassword: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.authApi}/forgot-password`, { email, newPassword });
+  }
+
   signOut(): Observable<any> {
     return this.http.post(`${this.authApi}/signout`, {}, { headers: this.authHeaders() });
   }

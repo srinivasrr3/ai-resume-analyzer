@@ -32,9 +32,12 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   signUpFullName = '';
   signInEmail = '';
   signInPassword = '';
+  resetPassword = '';
+  resetPasswordConfirm = '';
   signInMessage = '';
   signInError = '';
   authLoading = false;
+  forgotPasswordMode = false;
   currentUser: AuthUser | null = null;
   history: any[] = [];
   private authWatchdogTimer: ReturnType<typeof setTimeout> | null = null;
@@ -146,6 +149,11 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.signInMessage = '';
     this.signInError = '';
 
+    if (this.forgotPasswordMode) {
+      this.submitForgotPassword();
+      return;
+    }
+
     if (this.authMode === 'signup' && !this.signUpFullName.trim()) {
       this.signInError = 'Please enter your full name.';
       return;
@@ -236,9 +244,77 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
   switchAuthMode(mode: 'signin' | 'signup') {
     this.authMode = mode;
+    this.forgotPasswordMode = false;
     this.signInMessage = '';
     this.signInError = '';
     this.signInPassword = '';
+    this.resetPassword = '';
+    this.resetPasswordConfirm = '';
+  }
+
+  toggleForgotPasswordMode() {
+    this.forgotPasswordMode = !this.forgotPasswordMode;
+    this.signInMessage = '';
+    this.signInError = '';
+    this.signInPassword = '';
+    this.resetPassword = '';
+    this.resetPasswordConfirm = '';
+  }
+
+  submitForgotPassword() {
+    this.signInMessage = '';
+    this.signInError = '';
+
+    if (!this.signInEmail.trim()) {
+      this.signInError = 'Please enter your email address.';
+      return;
+    }
+
+    if (!this.resetPassword.trim() || !this.resetPasswordConfirm.trim()) {
+      this.signInError = 'Please enter and confirm your new password.';
+      return;
+    }
+
+    if (this.resetPassword !== this.resetPasswordConfirm) {
+      this.signInError = 'New password and confirmation do not match.';
+      return;
+    }
+
+    const unmet = this.getUnmetPasswordRequirements(this.resetPassword);
+    if (unmet.length) {
+      this.signInError = `Password does not meet requirements: ${unmet.join(', ')}.`;
+      return;
+    }
+
+    this.startAuthRequestWatchdog();
+
+    this.authService
+      .forgotPassword(this.signInEmail, this.resetPassword)
+      .pipe(
+        timeout(15000),
+        finalize(() => {
+          this.authLoading = false;
+          if (this.authWatchdogTimer) {
+            clearTimeout(this.authWatchdogTimer);
+            this.authWatchdogTimer = null;
+          }
+        })
+      )
+      .subscribe({
+      next: (response) => {
+        this.signInMessage = response?.message || 'Password reset successful. Please sign in with your new password.';
+        this.signInError = '';
+        this.forgotPasswordMode = false;
+        this.signInPassword = '';
+        this.resetPassword = '';
+        this.resetPasswordConfirm = '';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.signInError = this.resolveAuthError(err, 'Unable to reset password.');
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   signOut() {
@@ -252,7 +328,10 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     this.authService.clearSession();
     this.currentUser = null;
     this.history = [];
+    this.forgotPasswordMode = false;
     this.signInPassword = '';
+    this.resetPassword = '';
+    this.resetPasswordConfirm = '';
     this.signInMessage = showMessage ? 'Signed out successfully.' : '';
     this.signInError = '';
     this.cdr.detectChanges();
@@ -271,7 +350,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   getPasswordRequirementState(requirementKey: string): boolean {
-    const password = this.signInPassword || '';
+    const password = this.forgotPasswordMode ? (this.resetPassword || '') : (this.signInPassword || '');
     switch (requirementKey) {
       case 'length':
         return password.length >= 10;

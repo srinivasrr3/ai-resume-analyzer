@@ -1,6 +1,7 @@
 package com.resume.resume_analyzer_backend;
 
 import com.resume.resume_analyzer_backend.dto.auth.AuthResponse;
+import com.resume.resume_analyzer_backend.dto.auth.ForgotPasswordRequest;
 import com.resume.resume_analyzer_backend.dto.auth.PasswordValidationResult;
 import com.resume.resume_analyzer_backend.dto.auth.SignInRequest;
 import com.resume.resume_analyzer_backend.dto.auth.SignUpRequest;
@@ -51,6 +52,16 @@ public class AuthController {
         String token = extractBearerToken(authorization);
         authService.signOut(token);
         return ResponseEntity.ok(Map.of("message", "Signed out successfully."));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        try {
+            authService.forgotPassword(request);
+            return ResponseEntity.ok(Map.of("message", "Password reset successful. You can sign in with your new password."));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(error(ex.getMessage()));
+        }
     }
 
     @GetMapping("/password-policy")
