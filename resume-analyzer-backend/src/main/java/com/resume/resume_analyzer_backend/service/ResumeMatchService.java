@@ -34,7 +34,9 @@ public class ResumeMatchService {
             "microservices", "rest", "rest api", "api", "machine learning",
             "data analysis", "power bi", "tableau", "c", "c++",
             "linux", "bash", "agile", "scrum", "ci/cd", "communication",
-            "leadership", "project management", "kotlin", "swift"
+            "leadership", "project management", "kotlin", "swift",
+            "sales", "marketing", "accounting", "finance", "recruitment",
+            "customer service", "negotiation", "teamwork", "problem solving"
     ));
 
     private static final Set<String> STOPWORDS = new HashSet<>(Arrays.asList(
@@ -56,10 +58,10 @@ public class ResumeMatchService {
             Pattern.CASE_INSENSITIVE);
     private static final Pattern PHONE_PATTERN = Pattern.compile("(\\+?\\d[\\d\\s\\-()]{7,}\\d)");
 
-    private final Set<String> masterSkills;
+    private final Map<String, String> normalizedSkillMap;
 
     public ResumeMatchService() {
-        this.masterSkills = loadSkills();
+        this.normalizedSkillMap = loadSkills();
     }
 
     public Map<String, Object> analyze(String resumeText, String jobDescription) {
@@ -139,21 +141,32 @@ public class ResumeMatchService {
         return result;
     }
 
-    private Set<String> loadSkills() {
-        Set<String> allSkills = new LinkedHashSet<>(DEFAULT_SKILLS);
+    private Map<String, String> loadSkills() {
+        Map<String, String> allSkills = new LinkedHashMap<>();
+        for (String skill : DEFAULT_SKILLS) {
+            addSkill(allSkills, skill);
+        }
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(new ClassPathResource("skills.txt").getInputStream(), StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String skill = line.trim().toLowerCase(Locale.ROOT);
-                if (!skill.isBlank()) {
-                    allSkills.add(skill);
+                if (skill.isBlank() || skill.startsWith("#")) {
+                    continue;
                 }
+                addSkill(allSkills, skill);
             }
         } catch (Exception ignored) {
             // Keep default skills if resource loading fails.
         }
         return allSkills;
+    }
+
+    private void addSkill(Map<String, String> target, String skill) {
+        String normalizedSkill = normalizeText(skill);
+        if (!normalizedSkill.isBlank()) {
+            target.putIfAbsent(normalizedSkill, skill);
+        }
     }
 
     private String safeLower(String value) {
@@ -165,10 +178,10 @@ public class ResumeMatchService {
 
         Set<String> found = new LinkedHashSet<>();
         String normalized = " " + normalizeText(text) + " ";
-        for (String skill : masterSkills) {
-            String token = " " + normalizeText(skill) + " ";
+        for (Map.Entry<String, String> skillEntry : normalizedSkillMap.entrySet()) {
+            String token = " " + skillEntry.getKey() + " ";
             if (normalized.contains(token)) {
-                found.add(skill);
+                found.add(skillEntry.getValue());
             }
         }
 

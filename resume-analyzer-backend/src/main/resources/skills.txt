@@ -1,61 +1,369 @@
+# Core IT and Software
 java
 spring
 spring boot
 hibernate
-microservices
-docker
-kubernetes
-aws
-azure
-gcp
-sql
-mysql
-postgresql
-mongodb
-react
-angular
-vue
-node
-express
+jpa
 python
 django
 flask
-data structures
-algorithms
+fastapi
+node
+nodejs
+node.js
+express
+nestjs
+react
+next.js
+angular
+vue
+nuxt
+svelte
+javascript
+typescript
+html
+css
+sass
+bootstrap
+tailwind
+material ui
+rest
+rest api
+graphql
+websocket
+microservices
+api design
+swagger
+openapi
+postgresql
+mysql
+mariadb
+oracle sql
+sql
+mongodb
+redis
+elasticsearch
+firebase
+supabase
+dynamodb
+cassandra
+git
+github
+gitlab
+bitbucket
+linux
+bash
+powershell
+jenkins
+github actions
+ci/cd
+docker
+kubernetes
+terraform
+ansible
+aws
+azure
+gcp
+serverless
+cloudformation
+nginx
+apache kafka
+rabbitmq
+
+# Programming Languages
+c
+c++
+c#
+go
+rust
+scala
+kotlin
+swift
+r
+matlab
+php
+laravel
+ruby
+rails
+perl
+
+# Data, AI, Analytics
 machine learning
 deep learning
+natural language processing
 nlp
+computer vision
+data science
+data analysis
+feature engineering
+model evaluation
+statistics
+predictive modeling
 power bi
 tableau
 excel
-jira
+advanced excel
+sql analytics
+data visualization
+pandas
+numpy
+scikit-learn
+tensorflow
+pytorch
+keras
+hadoop
+spark
+etl
+data warehousing
+a/b testing
+business intelligence
+
+# QA, Security, Infrastructure
+manual testing
+automation testing
+selenium
+cypress
+playwright
+junit
+pytest
+quality assurance
+performance testing
+load testing
+cybersecurity
+application security
+network security
+penetration testing
+vulnerability assessment
+incident response
+identity and access management
+sre
+site reliability engineering
+monitoring
+observability
+prometheus
+grafana
+splunk
+
+# Product, Project, Delivery
 agile
-devops
-ci/cd
-jenkins
-linux
-git
-rest api
-graphql
-html
-css
-javascript
-typescript
-c
-c++
-go
-scala
-rust
-android
-ios
-swift
-kotlin
+scrum
+kanban
+jira
+confluence
+project management
+program management
+product management
+roadmapping
+stakeholder management
+risk management
+budget management
+change management
+requirements gathering
+business analysis
+user stories
+sprint planning
+release management
+
+# Design and UX
+ui design
+ux design
+wireframing
+prototyping
+figma
+adobe xd
+illustrator
+photoshop
+information architecture
+interaction design
+accessibility
+usability testing
+content design
+
+# General Professional and Soft Skills
+communication
+verbal communication
+written communication
+presentation skills
+public speaking
+active listening
+leadership
+team leadership
+people management
+teamwork
+collaboration
+problem solving
+critical thinking
+decision making
+adaptability
+time management
+prioritization
+negotiation
+conflict resolution
+mentoring
+coaching
+customer focus
+attention to detail
+creativity
+emotional intelligence
+
+# Sales and Customer Operations
 sales
+inside sales
+field sales
+b2b sales
+b2c sales
+account management
+key account management
+business development
+lead generation
+cold calling
+crm
+salesforce
+hubspot
+customer service
+customer success
+client relationship management
+upselling
+cross-selling
+pipeline management
+territory management
+market research
+
+# Marketing and Content
 marketing
+digital marketing
+performance marketing
+seo
+sem
+social media marketing
+email marketing
+content marketing
+brand management
+campaign management
+copywriting
+google analytics
+marketing automation
+product marketing
+public relations
+
+# Finance and Accounting
 finance
 accounting
+bookkeeping
+financial analysis
+financial modeling
+budgeting
+forecasting
+cost accounting
+management accounting
+auditing
+taxation
+accounts payable
+accounts receivable
+payroll
+quickbooks
+sap fico
+compliance
+internal controls
+
+# HR and Talent
+human resources
 hr
 recruitment
-communication
-leadership
-project management
+talent acquisition
+sourcing
+screening
+interviewing
+employee relations
+performance management
+training and development
+onboarding
+hr operations
+hr analytics
+compensation and benefits
+labor law
+
+# Operations and Supply Chain
+operations management
+process improvement
+lean
+six sigma
+inventory management
+supply chain
+procurement
+vendor management
+logistics
+warehouse management
+demand planning
+quality control
+production planning
+
+# Legal and Administration
+legal research
+contract management
+documentation
+record management
+administration
+office management
+calendar management
+data entry
+ms office
+microsoft office
+
+# Healthcare and Clinical
+patient care
+clinical documentation
+electronic health records
+medical coding
+medical billing
+nursing
+phlebotomy
+pharmacy operations
+healthcare administration
+infection control
+
+# Education and Training
+teaching
+curriculum development
+classroom management
+lesson planning
+e-learning
+instructional design
+assessment design
+student mentoring
+
+# Manufacturing, Field, and Technical Trades
+manufacturing
+cnc operation
+autocad
+solidworks
+mechanical maintenance
+electrical maintenance
+preventive maintenance
+quality inspection
+safety compliance
+technical support
+field service
+installation
+commissioning
+
+# Hospitality, Retail, and Services
+hospitality
+hotel operations
+front office
+food and beverage
+retail sales
+merchandising
+cash handling
+point of sale
+store management
+event management
+travel coordination
+
+# Government and Public Sector
+policy analysis
+public administration
+grant writing
+community outreach
+case management
+report writing
