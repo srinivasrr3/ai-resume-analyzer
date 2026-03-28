@@ -172,22 +172,29 @@
 
         <ng-container *ngIf="currentPage === 'pricing'">
           <h2>Pricing</h2>
-          <p>Choose a plan based on analysis depth and usage volume.</p>
+          <p>Start with Free by default. Upgrade anytime to Pro monthly or yearly.</p>
           <div class="pricing-grid">
-            <div class="price-card">
+            <div class="price-card" [class.featured]="selectedPlan === 'free'">
               <h4>Starter</h4>
               <p class="price-value">Free</p>
-              <p>Basic ATS score and keyword match insights for single resume checks.</p>
+              <p>Basic ATS score, core matching insights, and manual improvement guidance.</p>
+              <button class="btn-outline" (click)="choosePlan('free')" [disabled]="selectedPlan === 'free'">
+                {{ selectedPlan === 'free' ? 'Current Plan' : 'Select Free' }}
+              </button>
             </div>
-            <div class="price-card featured">
+            <div class="price-card" [class.featured]="selectedPlan === 'pro-monthly' || selectedPlan === 'pro-yearly'">
               <h4>Pro</h4>
-              <p class="price-value">$12/mo</p>
-              <p>Advanced skill gap detection and targeted improvements for active job seekers.</p>
-            </div>
-            <div class="price-card">
-              <h4>Teams</h4>
-              <p class="price-value">$49/mo</p>
-              <p>Bulk analysis and recruiter-ready summaries for training programs and hiring teams.</p>
+              <p class="price-value">$5/mo</p>
+              <p>$49/year</p>
+              <p>Advanced gap detection, richer insights, and faster resume optimization workflow.</p>
+              <div class="plan-actions">
+                <button class="btn-primary" (click)="choosePlan('pro-monthly')">
+                  {{ selectedPlan === 'pro-monthly' ? 'Selected: Monthly' : 'Choose Monthly' }}
+                </button>
+                <button class="btn-outline" (click)="choosePlan('pro-yearly')">
+                  {{ selectedPlan === 'pro-yearly' ? 'Selected: Yearly' : 'Choose Yearly' }}
+                </button>
+              </div>
             </div>
           </div>
         </ng-container>

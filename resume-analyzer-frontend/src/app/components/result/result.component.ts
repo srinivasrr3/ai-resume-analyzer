@@ -84,4 +84,23 @@ export class ResultComponent implements OnChanges {
       this.cdr.detectChanges();
     }, 12);
   }
+
+  getSkillConfidenceItems(): Array<{ skill: string; confidence: string; score: number; occurrences: number }> {
+    if (!Array.isArray(this.result?.skillConfidence)) return [];
+    return this.result.skillConfidence;
+  }
+
+  formatConfidenceLabel(value: string): string {
+    const normalized = (value || '').toLowerCase();
+    if (normalized === 'high') return 'High';
+    if (normalized === 'medium') return 'Medium';
+    return 'Low';
+  }
+
+  confidenceClass(value: string): string {
+    const normalized = (value || '').toLowerCase();
+    if (normalized === 'high') return 'confidence-high';
+    if (normalized === 'medium') return 'confidence-medium';
+    return 'confidence-low';
+  }
 }

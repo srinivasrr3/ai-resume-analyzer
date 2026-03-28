@@ -28,6 +28,7 @@ type PageName =
 export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   analysisResult: any = null;
   currentPage: PageName = 'home';
+  selectedPlan: 'free' | 'pro-monthly' | 'pro-yearly' = 'free';
   authMode: 'signin' | 'signup' = 'signin';
   signUpFullName = '';
   signInEmail = '';
@@ -663,6 +664,10 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     link.download = fileName;
     link.click();
     URL.revokeObjectURL(url);
+  }
+
+  choosePlan(plan: 'free' | 'pro-monthly' | 'pro-yearly') {
+    this.selectedPlan = plan;
   }
 
   private buildSimplePdf(lines: string[]): Blob {

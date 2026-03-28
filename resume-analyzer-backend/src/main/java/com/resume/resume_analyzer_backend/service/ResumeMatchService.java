@@ -73,6 +73,7 @@ public class ResumeMatchService {
         Set<String> resumeSkills = extractSkills(resume);
         Set<String> jdSkills = extractSkills(jd);
         Map<String, Integer> jdSkillWeights = computeJobSkillWeights(jd, jdSkills);
+        List<Map<String, Object>> skillConfidence = buildSkillConfidence(resume, resumeSkills);
 
         Set<String> matchedSkills = new LinkedHashSet<>(resumeSkills);
         matchedSkills.retainAll(jdSkills);
@@ -119,6 +120,7 @@ public class ResumeMatchService {
         result.put("matchScore", overallAtsScore);
         result.put("matchedSkills", sortedList(matchedSkills));
         result.put("missingSkills", sortedList(missingSkills));
+        result.put("skillConfidence", skillConfidence);
         result.put("criticalMissingSkills", criticalMissingSkills);
         result.put("improvementSuggestions", suggestions);
 
@@ -194,6 +196,82 @@ public class ResumeMatchService {
             found.add("api");
         }
         return found;
+    }
+
+    private List<Map<String, Object>> buildSkillConfidence(String resume, Set<String> resumeSkills) {
+        String normalizedResume = " " + normalizeText(resume) + " ";
+        List<String> skillSectionHints = Arrays.asList(" skills ", " technical skills ", " core skills ", " competencies ", " tools ");
+
+        return resumeSkills.stream()
+                .sorted()
+                .map(skill -> {
+                    String normalizedSkill = normalizeText(skill);
+                    String token = " " + normalizedSkill + " ";
+                    int occurrences = countOccurrences(normalizedResume, token);
+                    boolean inSkillsSection = appearsNearHints(normalizedResume, token, skillSectionHints);
+                    String confidence = resolveConfidence(skill, occurrences, inSkillsSection);
+
+                    Map<String, Object> item = new LinkedHashMap<>();
+                    item.put("skill", skill);
+                    item.put("confidence", confidence);
+                    item.put("score", confidenceScore(confidence));
+                    item.put("occurrences", occurrences);
+                    return item;
+                })
+                .toList();
+    }
+
+    private int countOccurrences(String haystack, String needle) {
+        if (needle.isBlank()) return 0;
+        int count = 0;
+        int from = 0;
+        while (true) {
+            int idx = haystack.indexOf(needle, from);
+            if (idx < 0) break;
+            count++;
+            from = idx + needle.length();
+        }
+        return count;
+    }
+
+    private boolean appearsNearHints(String text, String skillToken, List<String> hints) {
+        int searchFrom = 0;
+        while (true) {
+            int idx = text.indexOf(skillToken, searchFrom);
+            if (idx < 0) return false;
+
+            int from = Math.max(0, idx - 140);
+            int to = Math.min(text.length(), idx + skillToken.length() + 40);
+            String window = text.substring(from, to);
+            for (String hint : hints) {
+                if (window.contains(hint)) {
+                    return true;
+                }
+            }
+            searchFrom = idx + skillToken.length();
+        }
+    }
+
+    private String resolveConfidence(String skill, int occurrences, boolean inSkillsSection) {
+        String normalized = normalizeText(skill);
+        if (occurrences >= 3) return "high";
+        if (occurrences == 2) return "medium";
+        if (occurrences == 1) {
+            if (inSkillsSection) return "high";
+            if (normalized.length() >= 6 || normalized.contains(" ") || normalized.contains("+") || normalized.contains("#") || normalized.contains("/")) {
+                return "medium";
+            }
+            return "low";
+        }
+        return "low";
+    }
+
+    private int confidenceScore(String confidence) {
+        return switch (confidence) {
+            case "high" -> 90;
+            case "medium" -> 65;
+            default -> 40;
+        };
     }
 
     private String normalizeText(String input) {

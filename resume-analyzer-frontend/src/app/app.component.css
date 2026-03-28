@@ -173,6 +173,10 @@
   margin: 20px 0;
 }
 
+.pricing-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .template-card,
 .blog-card,
 .price-card {
@@ -199,6 +203,13 @@
   font-weight: 700;
   color: #2563eb;
   margin: 4px 0 8px 0;
+}
+
+.plan-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
 
 .section-subtitle {
@@ -602,50 +613,6 @@
 @keyframes fadeSkillIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
-}
-/* HOW IT WORKS SECTION */
-
-.how-it-works {
-  padding: 100px 0;
-  background: #f8fafc;
-  text-align: center;
-}
-
-.how-it-works h2 {
-  font-size: 26px;
-  margin-bottom: 15px;
-}
-
-.how-desc {
-  font-size: 15px;
-  max-width: 800px;
-  margin: 0 auto 50px auto;
-  color: #475569;
-}
-
-.steps {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-}
-
-.step {
-  background: white;
-  padding: 25px;
-  border-radius: 16px;
-  width: 280px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease;
-}
-
-.step:hover {
-  transform: translateY(-6px);
-}
-
-.step h4 {
-  font-size: 16px;
-  margin-bottom: 10px;
 }
 
 @media (max-width: 900px) {

@@ -168,6 +168,57 @@ h3 {
   padding-left: 18px;
 }
 
+.confidence-box {
+  margin-top: 20px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.confidence-box h4 {
+  margin: 0 0 10px 0;
+}
+
+.confidence-row {
+  margin-bottom: 10px;
+}
+
+.confidence-row:last-child {
+  margin-bottom: 0;
+}
+
+.confidence-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.confidence-track {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.confidence-high {
+  background: #16a34a;
+}
+
+.confidence-medium {
+  background: #d97706;
+}
+
+.confidence-low {
+  background: #dc2626;
+}
+
 .insights-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

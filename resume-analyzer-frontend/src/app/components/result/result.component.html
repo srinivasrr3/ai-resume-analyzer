@@ -109,6 +109,23 @@
     </ul>
   </div>
 
+  <div class="confidence-box" *ngIf="getSkillConfidenceItems().length">
+    <h4>Detected Skill Confidence Meter</h4>
+    <div class="confidence-row" *ngFor="let item of getSkillConfidenceItems()">
+      <div class="confidence-label">
+        <span>{{ item.skill }}</span>
+        <strong>{{ formatConfidenceLabel(item.confidence) }}</strong>
+      </div>
+      <div class="confidence-track">
+        <div
+          class="confidence-fill"
+          [ngClass]="confidenceClass(item.confidence)"
+          [style.width.%]="item.score || 0"
+        ></div>
+      </div>
+    </div>
+  </div>
+
   <div class="insights-grid">
     <div class="insight-card" *ngIf="result.strengths?.length">
       <h4>Strengths</h4>
