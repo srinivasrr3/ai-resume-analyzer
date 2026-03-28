@@ -111,14 +111,14 @@
 
   <div class="confidence-box" *ngIf="getSkillConfidenceItems().length">
     <h4>Detected Skill Confidence Meter</h4>
-    <div class="confidence-row" *ngFor="let item of getSkillConfidenceItems()">
-      <div class="confidence-label">
+    <div class="bar-block confidence-block" *ngFor="let item of getSkillConfidenceItems()">
+      <div class="bar-label">
         <span>{{ item.skill }}</span>
-        <strong>{{ formatConfidenceLabel(item.confidence) }}</strong>
+        <span>{{ formatConfidenceLabel(item.confidence) }} ({{ item.score || 0 }}%)</span>
       </div>
-      <div class="confidence-track">
+      <div class="bar">
         <div
-          class="confidence-fill"
+          class="bar-fill confidence-fill"
           [ngClass]="confidenceClass(item.confidence)"
           [style.width.%]="item.score || 0"
         ></div>
