@@ -26,137 +26,171 @@
   </div>
 </nav>
 
-<ng-container *ngIf="currentPage === 'home'">
-  <section class="hero">
-    <div class="container hero-center">
-      <h1>Is Your Resume Good Enough?</h1>
-      <p>
-        Get an accurate ATS score, identify missing skills, and improve your resume instantly using AI-powered
-        analysis.
-      </p>
-
-      <div class="floating-resume-wrapper">
-        <div class="resume-depth-card">
-          <div class="resume-title"></div>
-          <div class="resume-line"></div>
-          <div class="resume-line medium"></div>
-          <div class="resume-line short"></div>
-
-          <div class="skill-preview skill-match">Matched Skills</div>
-          <div class="skill-preview skill-match">Analyze and Improve</div>
-          <div class="skill-preview skill-miss">Missing Skills</div>
-
-          <div class="scan-beam"></div>
-        </div>
-        <div class="resume-depth-shadow"></div>
-      </div>
-
-      <div id="analyzer-section">
-        <app-upload (analysisCompleted)="handleAnalysis($event)"></app-upload>
-      </div>
-    </div>
-  </section>
-
-  <section class="results-section" *ngIf="analysisResult">
-    <div class="container">
-      <app-result [result]="analysisResult"></app-result>
-    </div>
-  </section>
-
-  <section class="how-it-works">
-    <div class="container">
-      <h2>How Our AI Resume Analyzer Works</h2>
-      <p class="how-desc">
-        Our AI scans your resume using advanced parsing algorithms. It extracts technical skills, evaluates keyword
-        matching, analyzes formatting, calculates ATS compatibility, and compares it against your job description.
-      </p>
-
-      <div class="steps">
-        <div class="step">
-          <h4>1. Smart Parsing</h4>
-          <p>Extracts skills, technologies, experience and formatting structure.</p>
-        </div>
-
-        <div class="step">
-          <h4>2. Skill Matching</h4>
-          <p>Compares resume skills with job description requirements.</p>
-        </div>
-
-        <div class="step">
-          <h4>3. ATS Score Generation</h4>
-          <p>Generates real-time ATS score based on relevance and completeness.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-</ng-container>
-
-<ng-container *ngIf="currentPage !== 'home'">
-  <section class="feature-page">
-    <div class="container panel-content">
-      <ng-container *ngIf="currentPage === 'resume'">
-        <h2>Resume Toolkit</h2>
+<main class="page-content">
+  <ng-container *ngIf="currentPage === 'home'">
+    <section class="hero">
+      <div class="container hero-center">
+        <h1>Is Your Resume Good Enough?</h1>
         <p>
-          Download a polished demo resume in PDF format and use it as a practical reference for structure, quantified
-          impact statements, and ATS-friendly formatting.
+          Get an accurate ATS score, identify missing skills, and improve your resume instantly using AI-powered
+          analysis.
         </p>
-        <div class="panel-actions">
-          <button class="btn-primary" (click)="downloadDemoResume()">Download Demo Resume PDF</button>
-          <button class="btn-outline" (click)="navigateTo('home'); goToAnalyzer()">Analyze Your Resume</button>
-        </div>
-      </ng-container>
 
-      <ng-container *ngIf="currentPage === 'cover-letters'">
-        <h2>Cover Letters</h2>
-        <p>Use this structure to create concise cover letters aligned to the target job description.</p>
-        <div class="template-grid">
-          <div class="template-card">
-            <h4>Opening</h4>
-            <p>I am excited to apply for the [Role] position at [Company], where I can contribute with [strengths].</p>
-          </div>
-          <div class="template-card">
-            <h4>Impact Section</h4>
-            <p>At [Company], I improved [metric] by [result] through [specific action or architecture change].</p>
-          </div>
-          <div class="template-card">
-            <h4>Close</h4>
-            <p>I would value the opportunity to discuss how my experience can help [Company] achieve [goal].</p>
-          </div>
-        </div>
-      </ng-container>
+        <div class="floating-resume-wrapper">
+          <div class="resume-depth-card">
+            <div class="resume-title"></div>
+            <div class="resume-line"></div>
+            <div class="resume-line medium"></div>
+            <div class="resume-line short"></div>
 
-      <ng-container *ngIf="currentPage === 'blog'">
-        <h2>Career Blog</h2>
-        <p>Practical resume and hiring guidance tailored for ATS-first recruitment workflows.</p>
-        <div class="blog-grid">
-          <article class="blog-card" *ngFor="let post of blogPosts">
-            <h4>{{ post.title }}</h4>
-            <p>{{ post.excerpt }}</p>
-          </article>
-        </div>
-      </ng-container>
+            <div class="skill-preview skill-match">Matched Skills</div>
+            <div class="skill-preview skill-match">Analyze and Improve</div>
+            <div class="skill-preview skill-miss">Missing Skills</div>
 
-      <ng-container *ngIf="currentPage === 'pricing'">
-        <h2>Pricing</h2>
-        <p>Choose a plan based on analysis depth and usage volume.</p>
-        <div class="pricing-grid">
-          <div class="price-card">
-            <h4>Starter</h4>
-            <p class="price-value">Free</p>
-            <p>Basic ATS score and keyword match insights for single resume checks.</p>
+            <div class="scan-beam"></div>
           </div>
-          <div class="price-card featured">
-            <h4>Pro</h4>
-            <p class="price-value">$12/mo</p>
-            <p>Advanced skill gap detection and targeted improvements for active job seekers.</p>
+          <div class="resume-depth-shadow"></div>
+        </div>
+
+        <div id="analyzer-section">
+          <app-upload (analysisCompleted)="handleAnalysis($event)"></app-upload>
+        </div>
+      </div>
+    </section>
+
+    <section class="results-section" *ngIf="analysisResult">
+      <div class="container">
+        <app-result [result]="analysisResult"></app-result>
+      </div>
+    </section>
+
+    <section class="how-it-works">
+      <div class="container">
+        <h2>How Our AI Resume Analyzer Works</h2>
+        <p class="how-desc">
+          Our AI scans your resume using advanced parsing algorithms. It extracts technical skills, evaluates keyword
+          matching, analyzes formatting, calculates ATS compatibility, and compares it against your job description.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <h4>1. Smart Parsing</h4>
+            <p>Extracts skills, technologies, experience and formatting structure.</p>
           </div>
-          <div class="price-card">
-            <h4>Teams</h4>
-            <p class="price-value">$49/mo</p>
-            <p>Bulk analysis and recruiter-ready summaries for training programs and hiring teams.</p>
+
+          <div class="step">
+            <h4>2. Skill Matching</h4>
+            <p>Compares resume skills with job description requirements.</p>
+          </div>
+
+          <div class="step">
+            <h4>3. ATS Score Generation</h4>
+            <p>Generates real-time ATS score based on relevance and completeness.</p>
           </div>
         </div>
-      </ng-container>
+      </div>
+    </section>
+  </ng-container>
+
+  <ng-container *ngIf="currentPage !== 'home'">
+    <section class="feature-page">
+      <div class="container panel-content">
+        <ng-container *ngIf="currentPage === 'resume'">
+          <h2>Resume Toolkit</h2>
+          <p>
+            Download a polished demo resume in PDF format and use it as a practical reference for structure, quantified
+            impact statements, and ATS-friendly formatting.
+          </p>
+          <div class="panel-actions">
+            <button class="btn-primary" (click)="downloadDemoResume()">Download Demo Resume PDF</button>
+            <button class="btn-outline" (click)="navigateTo('home'); goToAnalyzer()">Analyze Your Resume</button>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentPage === 'cover-letters'">
+          <h2>Cover Letter Professional Format</h2>
+          <p>
+            Use this general professional structure to draft role-specific cover letters with clear impact and a
+            strong closing.
+          </p>
+
+          <div class="cover-format-grid">
+            <div class="template-card" *ngFor="let block of coverLetterFormatBlocks">
+              <h4>{{ block.title }}</h4>
+              <p>{{ block.description }}</p>
+            </div>
+          </div>
+
+          <h3 class="section-subtitle">Download Demo Cover Letters</h3>
+          <p>Use these examples as references and tailor them to your target role, achievements, and company context.</p>
+          <div class="cover-letter-demo-grid">
+            <div class="template-card cover-letter-demo-card" *ngFor="let sample of coverLetterSamples">
+              <h4>{{ sample.title }}</h4>
+              <p>{{ sample.summary }}</p>
+              <button class="btn-outline" (click)="downloadCoverLetterSample(sample.fileName, sample.lines)">
+                Download {{ sample.shortLabel }}
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentPage === 'blog'">
+          <h2>How ElevateCV Works in Real Time</h2>
+          <p>
+            ElevateCV processes each resume through a full pipeline: parsing, skill extraction, ATS scoring, gap
+            analysis, risk flagging, and focused recommendations.
+          </p>
+
+          <div class="workflow-grid">
+            <article class="blog-card" *ngFor="let step of realTimeWorkflowSteps">
+              <h4>{{ step.title }}</h4>
+              <p>{{ step.excerpt }}</p>
+            </article>
+          </div>
+
+          <h3 class="section-subtitle">Live Analysis Snapshots</h3>
+          <div class="analysis-image-grid">
+            <div class="analysis-image-card" *ngFor="let visual of analysisVisualCards">
+              <div class="analysis-image-mock">
+                <div class="mock-header">{{ visual.header }}</div>
+                <div class="mock-line" *ngFor="let line of [1, 2, 3, 4]"></div>
+                <div class="mock-highlight">{{ visual.metric }}</div>
+              </div>
+              <h4>{{ visual.title }}</h4>
+              <p>{{ visual.description }}</p>
+            </div>
+          </div>
+
+          <h3 class="section-subtitle">Engineering Principles</h3>
+          <div class="template-grid">
+            <div class="template-card" *ngFor="let principle of platformPrinciples">
+              <h4>{{ principle.title }}</h4>
+              <p>{{ principle.description }}</p>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="currentPage === 'pricing'">
+          <h2>Pricing</h2>
+          <p>Choose a plan based on analysis depth and usage volume.</p>
+          <div class="pricing-grid">
+            <div class="price-card">
+              <h4>Starter</h4>
+              <p class="price-value">Free</p>
+              <p>Basic ATS score and keyword match insights for single resume checks.</p>
+            </div>
+            <div class="price-card featured">
+              <h4>Pro</h4>
+              <p class="price-value">$12/mo</p>
+              <p>Advanced skill gap detection and targeted improvements for active job seekers.</p>
+            </div>
+            <div class="price-card">
+              <h4>Teams</h4>
+              <p class="price-value">$49/mo</p>
+              <p>Bulk analysis and recruiter-ready summaries for training programs and hiring teams.</p>
+            </div>
+          </div>
+        </ng-container>
 
       <ng-container *ngIf="currentPage === 'sign-in'">
         <h2>Account</h2>
@@ -247,7 +281,7 @@
         </div>
       </ng-container>
 
-      <ng-container *ngIf="currentPage === 'contact'">
+        <ng-container *ngIf="currentPage === 'contact'">
         <h2>Contact Us</h2>
         <p>For support, integrations, or partnership requests, use any of the channels below.</p>
         <div class="template-grid">
@@ -264,9 +298,9 @@
             <p>Within 24 hours on business days.</p>
           </div>
         </div>
-      </ng-container>
+        </ng-container>
 
-      <ng-container *ngIf="currentPage === 'faqs'">
+        <ng-container *ngIf="currentPage === 'faqs'">
         <h2>FAQs</h2>
         <div class="faq-list">
           <div class="faq-item">
@@ -282,9 +316,9 @@
             <p>It combines keyword relevance, skill coverage, structure, and overall content quality signals.</p>
           </div>
         </div>
-      </ng-container>
+        </ng-container>
 
-      <ng-container *ngIf="currentPage === 'privacy-policy'">
+        <ng-container *ngIf="currentPage === 'privacy-policy'">
         <h2>Privacy Policy</h2>
         <div class="policy-list">
           <p>We process uploaded resume files only for ATS analysis and result generation.</p>
@@ -292,10 +326,11 @@
           <p>Uploaded files should not include highly sensitive personal identifiers unless required.</p>
           <p>By using the platform, you consent to temporary processing needed for analysis workflows.</p>
         </div>
-      </ng-container>
-    </div>
-  </section>
-</ng-container>
+        </ng-container>
+      </div>
+    </section>
+  </ng-container>
+</main>
 
 <footer class="footer">
   <div class="container footer-center">

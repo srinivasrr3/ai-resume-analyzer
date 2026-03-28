@@ -48,18 +48,207 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     { key: 'number', label: 'At least one number' },
     { key: 'special', label: 'At least one special character' }
   ];
-  readonly blogPosts = [
+  readonly coverLetterFormatBlocks = [
     {
-      title: '7 ATS Mistakes That Kill Strong Resumes',
-      excerpt: 'A practical checklist to avoid parser failures and keyword blind spots before you apply.'
+      title: '1. Professional Header',
+      description: 'Include your name, email, phone, date, hiring manager details, and company address.'
     },
     {
-      title: 'How to Tailor Your Resume in 10 Minutes',
-      excerpt: 'Use role-specific skill clusters and impact bullets to improve matching without rewriting everything.'
+      title: '2. Role-Aligned Opening',
+      description: 'Clearly mention the job title and a concise reason why you are a strong candidate.'
     },
     {
-      title: 'Cover Letter Prompts That Actually Work',
-      excerpt: 'Structured prompts to generate concise, role-aligned cover letters with measurable impact statements.'
+      title: '3. Value & Impact Paragraphs',
+      description: 'Present 2-3 quantified achievements that match the role requirements and business outcomes.'
+    },
+    {
+      title: '4. Contextual Closing',
+      description: 'Reinforce fit, thank the hiring team, and request a conversation with a professional sign-off.'
+    }
+  ];
+  readonly coverLetterSamples = [
+    {
+      title: 'Software Engineer Demo',
+      shortLabel: 'Software Engineer PDF',
+      fileName: 'Cover-Letter-Software-Engineer-Demo.pdf',
+      summary: 'Backend + frontend impact-focused letter for product engineering roles.',
+      lines: [
+        'ALEX SHARMA',
+        'Bangalore, India | alex.sharma@email.com | +91 98765 22331 | linkedin.com/in/alex-sharma',
+        'Date: March 29, 2026',
+        '',
+        'Hiring Manager',
+        'NovaStack Technologies',
+        '',
+        'Subject: Application for Software Engineer',
+        '',
+        'Dear Hiring Manager,',
+        'I am excited to apply for the Software Engineer role at NovaStack Technologies.',
+        'With 5+ years of experience in Angular, Spring Boot, and cloud-native systems, I build reliable',
+        'products that improve both user experience and engineering velocity.',
+        '',
+        'In my current role, I reduced API latency by 42% by redesigning service interactions and query paths.',
+        'I also led a modular frontend refactor that improved release stability and raised Lighthouse scores',
+        'from 64 to 92 across core customer-facing pages.',
+        '',
+        'I am particularly interested in NovaStack because of your focus on scalable hiring technology.',
+        'I would value the opportunity to contribute to high-impact product initiatives and discuss my fit.',
+        '',
+        'Thank you for your consideration.',
+        'Sincerely,',
+        'Alex Sharma'
+      ]
+    },
+    {
+      title: 'Data Analyst Demo',
+      shortLabel: 'Data Analyst PDF',
+      fileName: 'Cover-Letter-Data-Analyst-Demo.pdf',
+      summary: 'Business analytics letter with SQL, BI, and measurable dashboard outcomes.',
+      lines: [
+        'MEERA REDDY',
+        'Hyderabad, India | meera.reddy@email.com | +91 90000 55661',
+        'Date: March 29, 2026',
+        '',
+        'Hiring Team',
+        'InsightBridge Analytics',
+        '',
+        'Subject: Application for Data Analyst',
+        '',
+        'Dear Hiring Team,',
+        'I am writing to express my interest in the Data Analyst position at InsightBridge Analytics.',
+        'I specialize in SQL, Tableau, and business KPI modeling to convert raw data into decisions.',
+        '',
+        'At my current organization, I built executive dashboards that reduced weekly reporting effort',
+        'by 11 hours and improved forecast accuracy by 18%. I also automated validation checks that',
+        'decreased data-quality incidents by 35% quarter-over-quarter.',
+        '',
+        'I am confident my analytical rigor and business communication skills align with your team goals.',
+        'I would welcome the chance to discuss how I can support your data strategy roadmap.',
+        '',
+        'Thank you for your time.',
+        'Best regards,',
+        'Meera Reddy'
+      ]
+    },
+    {
+      title: 'Marketing Specialist Demo',
+      shortLabel: 'Marketing Specialist PDF',
+      fileName: 'Cover-Letter-Marketing-Specialist-Demo.pdf',
+      summary: 'Performance marketing sample with campaign, SEO, and conversion metrics.',
+      lines: [
+        'RINA THOMAS',
+        'Chennai, India | rina.thomas@email.com | +91 98888 11881',
+        'Date: March 29, 2026',
+        '',
+        'Hiring Manager',
+        'BluePeak Digital',
+        '',
+        'Subject: Application for Marketing Specialist',
+        '',
+        'Dear Hiring Manager,',
+        'I am pleased to apply for the Marketing Specialist role at BluePeak Digital.',
+        'My background includes full-funnel campaign execution, SEO optimization, and performance reporting.',
+        '',
+        'In my recent role, I improved paid campaign conversion rates by 27% and reduced cost per lead',
+        'by 22% through audience segmentation, creative iteration, and landing page testing.',
+        'I also increased organic traffic by 41% in 6 months via SEO content strategy.',
+        '',
+        'I am excited by BluePeak\'s growth strategy and would be glad to contribute to measurable pipeline impact.',
+        'I look forward to discussing this opportunity.',
+        '',
+        'Sincerely,',
+        'Rina Thomas'
+      ]
+    },
+    {
+      title: 'HR Generalist Demo',
+      shortLabel: 'HR Generalist PDF',
+      fileName: 'Cover-Letter-HR-Generalist-Demo.pdf',
+      summary: 'People-ops and recruitment operations template with onboarding and retention wins.',
+      lines: [
+        'KARTHIK IYER',
+        'Pune, India | karthik.iyer@email.com | +91 97777 44112',
+        'Date: March 29, 2026',
+        '',
+        'Talent Acquisition Team',
+        'PeopleFirst Solutions',
+        '',
+        'Subject: Application for HR Generalist',
+        '',
+        'Dear Talent Acquisition Team,',
+        'I am applying for the HR Generalist role at PeopleFirst Solutions with strong experience in',
+        'recruitment coordination, employee engagement, HR operations, and policy compliance.',
+        '',
+        'I streamlined onboarding workflows that reduced joining cycle time by 30% and partnered with',
+        'business leaders to improve first-year retention by 14%. I also standardized interview scorecards',
+        'to improve hiring consistency across 5 business units.',
+        '',
+        'I am eager to contribute to a people-centered culture and operationally strong HR function.',
+        'Thank you for considering my application.',
+        '',
+        'Regards,',
+        'Karthik Iyer'
+      ]
+    }
+  ];
+  readonly realTimeWorkflowSteps = [
+    {
+      title: '1. Resume Ingestion & Parsing',
+      excerpt: 'Uploaded resume content is extracted and normalized into analyzable text blocks for ATS-style processing.'
+    },
+    {
+      title: '2. Skill & Keyword Extraction',
+      excerpt: 'The engine identifies IT, non-IT, and soft skills from both resume and job description using unified matching.'
+    },
+    {
+      title: '3. Gap Detection & Risk Flags',
+      excerpt: 'Critical missing skills are prioritized from JD weighting rules and presented as actionable risk indicators.'
+    },
+    {
+      title: '4. Multi-Factor ATS Scoring',
+      excerpt: 'Scores are computed across skill alignment, keyword relevance, experience fit, impact evidence, and formatting.'
+    },
+    {
+      title: '5. Explainable Insights',
+      excerpt: 'Users receive strengths, weaknesses, and improvement suggestions with practical ordering for faster edits.'
+    },
+    {
+      title: '6. Persistent Analysis History',
+      excerpt: 'Authenticated users can revisit previous analysis runs and track improvements over time.'
+    }
+  ];
+  readonly analysisVisualCards = [
+    {
+      header: 'Parser Output',
+      metric: 'Skills Found: 42',
+      title: 'Resume Parsing Snapshot',
+      description: 'Section-aware extraction captures experience, skills, education, and measurable outcomes.'
+    },
+    {
+      header: 'Match Engine',
+      metric: 'Coverage: 78%',
+      title: 'Skill Alignment Snapshot',
+      description: 'Role-weighted comparison highlights matched and missing skills with priority on required terms.'
+    },
+    {
+      header: 'ATS Score',
+      metric: 'Overall: 81/100',
+      title: 'Scoring Snapshot',
+      description: 'Composite scoring blends relevance, impact quality, and ATS formatting readiness.'
+    }
+  ];
+  readonly platformPrinciples = [
+    {
+      title: 'Deterministic Scoring',
+      description: 'Consistent scoring logic improves trust and makes progress measurable after each resume revision.'
+    },
+    {
+      title: 'Actionable Guidance',
+      description: 'Suggestions are specific and prioritized, helping users act quickly instead of guessing what to edit.'
+    },
+    {
+      title: 'Domain-Aware Matching',
+      description: 'The skills engine covers technical, non-technical, and soft skills for broad role compatibility.'
     }
   ];
 
@@ -462,6 +651,16 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
     const link = document.createElement('a');
     link.href = url;
     link.download = 'ElevateCV-Demo-Resume.pdf';
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
+  downloadCoverLetterSample(fileName: string, lines: string[]) {
+    const pdfBlob = this.buildSimplePdf(lines);
+    const url = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
     link.click();
     URL.revokeObjectURL(url);
   }

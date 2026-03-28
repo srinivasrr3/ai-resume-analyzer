@@ -1,3 +1,13 @@
+:host {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+}
+
 /* Neural Canvas */
 #neuralCanvas {
   position: fixed;
@@ -155,7 +165,7 @@
 }
 
 .template-grid,
-.blog-grid,
+.workflow-grid,
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -189,6 +199,79 @@
   font-weight: 700;
   color: #2563eb;
   margin: 4px 0 8px 0;
+}
+
+.section-subtitle {
+  margin-top: 24px;
+}
+
+.cover-format-grid,
+.cover-letter-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.cover-letter-demo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cover-letter-demo-card .btn-outline {
+  width: fit-content;
+}
+
+.analysis-image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.analysis-image-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.analysis-image-card h4 {
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
+
+.analysis-image-mock {
+  border-radius: 10px;
+  border: 1px solid #bfdbfe;
+  background: linear-gradient(155deg, #eff6ff 0%, #dbeafe 100%);
+  padding: 10px;
+}
+
+.mock-header {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1e40af;
+  margin-bottom: 8px;
+}
+
+.mock-line {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(30, 64, 175, 0.2);
+  margin-bottom: 6px;
+}
+
+.mock-highlight {
+  margin-top: 6px;
+  background: #1d4ed8;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 5px 8px;
+  width: fit-content;
+  font-size: 0.78rem;
+  font-weight: 600;
 }
 
 .sign-in-modal {
@@ -381,6 +464,7 @@
   padding: 50px 0;
   background: #0f172a;
   color: white;
+  margin-top: auto;
 }
 
 .footer-center {
@@ -571,9 +655,12 @@
   }
 
   .template-grid,
-  .blog-grid,
+  .workflow-grid,
   .pricing-grid,
-  .history-grid {
+  .history-grid,
+  .analysis-image-grid,
+  .cover-format-grid,
+  .cover-letter-demo-grid {
     grid-template-columns: 1fr;
   }
 
